@@ -1,7 +1,9 @@
 package com.pennstatephil.raffleapp.dataaccess.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -13,7 +15,9 @@ import java.util.List;
 @Entity
 @Table(name = "raffles")
 @Data
-@Builder
+@Builder(toBuilder = true)
+@AllArgsConstructor
+@NoArgsConstructor
 public class RaffleEntity {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -21,14 +25,18 @@ public class RaffleEntity {
     @NotBlank
     private String name;
     @ManyToOne
+    @JoinColumn(name = "created_by")
     private UserEntity createdBy;
 
     private Boolean active;
     private Instant startsAt;
     private Instant endsAt;
 
-    @OneToMany
+    @OneToMany(mappedBy = "raffle")
     private List<PrizeEntity> prizes;
+
+    @OneToMany(mappedBy = "raffle")
+    private List<TierEntity> tiers;
 
     @CreationTimestamp
     private Instant createdAt;
