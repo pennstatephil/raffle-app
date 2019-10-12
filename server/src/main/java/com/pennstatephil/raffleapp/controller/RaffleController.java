@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
+
 @RestController
 @RequestMapping("/raffles")
 public class RaffleController {
@@ -21,5 +23,10 @@ public class RaffleController {
     @GetMapping("/{id}")
     public RaffleEntity getRaffleById(@PathVariable("id") Long raffleId) {
         return raffleService.getRaffleById(raffleId);
+    }
+
+    @GetMapping("/{id}/tickets/{amount}")
+    public Long getTicketsByAmount(@PathVariable("id") Long raffleId, @PathVariable("amount") BigDecimal amount) {
+        return raffleService.getTicketsByAmount(raffleId, amount);
     }
 }
