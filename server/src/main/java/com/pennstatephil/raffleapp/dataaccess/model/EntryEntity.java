@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "entries")
 @Data
-@Builder
+@Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 public class EntryEntity {

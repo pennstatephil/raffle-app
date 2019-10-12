@@ -1,13 +1,12 @@
 package com.pennstatephil.raffleapp.controller;
 
 import com.pennstatephil.raffleapp.dataaccess.model.RaffleEntity;
+import com.pennstatephil.raffleapp.model.RaffleEntryRequest;
 import com.pennstatephil.raffleapp.service.RaffleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.math.BigDecimal;
 
 @RestController
@@ -26,7 +25,12 @@ public class RaffleController {
     }
 
     @GetMapping("/{id}/tickets/{amount}")
-    public Long getTicketsByAmount(@PathVariable("id") Long raffleId, @PathVariable("amount") BigDecimal amount) {
+    public Integer getTicketsByAmount(@PathVariable("id") Long raffleId, @PathVariable("amount") BigDecimal amount) {
         return raffleService.getTicketsByAmount(raffleId, amount);
+    }
+
+    @PostMapping("/{id}/entry")
+    public void createEntry(@PathVariable("id") Long raffleId, @Valid @RequestBody RaffleEntryRequest request) {
+        raffleService.createRaffleEntry(raffleId, request);
     }
 }

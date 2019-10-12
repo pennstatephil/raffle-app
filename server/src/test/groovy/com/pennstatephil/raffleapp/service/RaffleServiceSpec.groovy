@@ -10,7 +10,7 @@ class RaffleServiceSpec extends Specification {
     RaffleService raffleService;
 
     def setup() {
-        raffleService = new RaffleService(null, null, tierRepository)
+        raffleService = new RaffleService(null, null, tierRepository, null, null)
     }
 
     @Unroll

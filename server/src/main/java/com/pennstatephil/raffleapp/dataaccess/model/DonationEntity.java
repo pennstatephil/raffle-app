@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "donations")
 @Data
-@Builder
+@Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 public class DonationEntity {
