@@ -18,7 +18,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class DonationEntity {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
     private UserEntity user;

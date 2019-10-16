@@ -19,14 +19,16 @@ public class RaffleService {
     private final TierRepository tierRepository;
     private final UserRepo userRepo;
     private final DonationRepository donationRepository;
+    private final PrizeRepository prizeRepository;
 
     @Autowired
-    public RaffleService(RaffleRepository raffleRepository, EntryRepository entryRepository, TierRepository tierRepository, UserRepo userRepo, DonationRepository donationRepository) {
+    public RaffleService(RaffleRepository raffleRepository, EntryRepository entryRepository, TierRepository tierRepository, UserRepo userRepo, DonationRepository donationRepository, PrizeRepository prizeRepository) {
         this.raffleRepository = raffleRepository;
         this.entryRepository = entryRepository;
         this.tierRepository = tierRepository;
         this.userRepo = userRepo;
         this.donationRepository = donationRepository;
+        this.prizeRepository = prizeRepository;
     }
 
     public RaffleEntity getRaffleById(Long raffleId) {
@@ -63,9 +65,12 @@ public class RaffleService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Exceeded maximum tickets");
         }
 
-        UserEntity savedUser = userRepo.save(request.getUser());
-        donationRepository.save(request.getDonation().toBuilder().user(savedUser).build());
+        UserEntity savedUser = userRepo.findByEmail(request.getUser().getEmail())
+                .orElseGet(() -> userRepo.save(request.getUser().toBuilder().admin(false).build()));
+
+        donationRepository.save(request.getDonation().toBuilder().raffle(raffleRepository.findById(raffleId).get()).user(savedUser).build());
         entryRepository.saveAll(request.getEntries().stream()
-                .map(entry -> entry.toBuilder().user(savedUser).build()).collect(Collectors.toList()));
+                .map(entry -> entry.toBuilder().prize(prizeRepository.findById(entry.getPrize().getId()).get())
+                        .user(savedUser).build()).collect(Collectors.toList()));
     }
 }
