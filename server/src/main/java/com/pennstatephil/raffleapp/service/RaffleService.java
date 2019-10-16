@@ -6,6 +6,7 @@ import com.pennstatephil.raffleapp.model.RaffleEntryRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
@@ -58,6 +59,7 @@ public class RaffleService {
         return totalTickets;
     }
 
+    @Transactional
     public void createRaffleEntry(Long raffleId, RaffleEntryRequest request) {
         Integer maxTickets = getTicketsByAmount(raffleId, request.getDonation().getAmount());
         Integer actualTickets = request.getEntries().stream().map(EntryEntity::getTickets).reduce(0, Integer::sum);
