@@ -33,4 +33,9 @@ public class RaffleController {
     public void createEntry(@PathVariable("id") Long raffleId, @Valid @RequestBody RaffleEntryRequest request) {
         raffleService.createRaffleEntry(raffleId, request);
     }
+
+    @PostMapping("/{id}/winners")
+    public RaffleEntity getWinners(@PathVariable("id") Long raffleId) {
+        return raffleService.pickWinners(raffleId);
+    }
 }

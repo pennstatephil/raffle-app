@@ -10,7 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service
@@ -63,7 +65,7 @@ public class RaffleService {
     public void createRaffleEntry(Long raffleId, RaffleEntryRequest request) {
         Integer maxTickets = getTicketsByAmount(raffleId, request.getDonation().getAmount());
         Integer actualTickets = request.getEntries().stream().map(EntryEntity::getTickets).reduce(0, Integer::sum);
-        if(maxTickets.compareTo(actualTickets) < 0) {
+        if (maxTickets.compareTo(actualTickets) < 0) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Exceeded maximum tickets");
         }
 
@@ -74,5 +76,26 @@ public class RaffleService {
         entryRepository.saveAll(request.getEntries().stream()
                 .map(entry -> entry.toBuilder().prize(prizeRepository.findById(entry.getPrize().getId()).get())
                         .user(savedUser).build()).collect(Collectors.toList()));
+    }
+
+    public RaffleEntity pickWinners(Long raffleId) {
+        Random random = new Random();
+        RaffleEntity raffle = raffleRepository.findById(raffleId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Raffle not found"));
+
+        for (PrizeEntity prize : raffle.getPrizes()) {
+            if (prize.getWonBy() == null) {
+                List<EntryEntity> entries = entryRepository.findAllByPrizeId(prize.getId());
+                if (!entries.isEmpty()) {
+                    List<UserEntity> prizeSelectionList = entries.stream()
+                            .flatMap(entry -> Collections.nCopies(entry.getTickets(), entry.getUser()).stream())
+                            .collect(Collectors.toList());
+                    UserEntity winner = prizeSelectionList.get(random.nextInt(prizeSelectionList.size()));
+                    prizeRepository.save(prize.toBuilder().wonBy(winner).build());
+                }
+            }
+        }
+
+        return getRaffleById(raffleId);
     }
 }
