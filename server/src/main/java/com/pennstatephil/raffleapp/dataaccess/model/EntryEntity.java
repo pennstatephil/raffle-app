@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "entries")
@@ -21,5 +23,7 @@ public class EntryEntity {
     private UserEntity user;
     @ManyToOne
     private PrizeEntity prize;
+    @Min(1)
+    @NotNull
     private Integer tickets;
 }
