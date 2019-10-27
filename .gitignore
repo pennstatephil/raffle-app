@@ -25,3 +25,7 @@ hs_err_pid*
 /server/.gradle
 /server/build
 !/server/gradle/**
+
+# client side 
+*node_modules
+*build
