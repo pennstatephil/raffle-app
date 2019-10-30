@@ -8,7 +8,7 @@ The front-end of this project was bootstrapped with [Create React App](https://g
 
 In the **client** directory, Start with
 
-### `npm start` or `yarn install`
+### `npm install` or `yarn install`
 
 In the **client** directory, you can run:
 
