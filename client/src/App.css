@@ -1,0 +1,68 @@
+.App {
+  text-align: center;
+}
+
+.top-container {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  margin: 50px;
+}
+
+.tiers-container {
+  border: 1px solid lightgray;
+}
+
+.tiers-info {
+  text-align: left;
+  padding-right: 40px;
+  /* padding-top: 20px; */
+}
+
+.tier {
+  padding-top: 10px;
+  font-size: 20px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+
+}
+
+.tiers-title {
+  padding-left: 40px;
+}
+
+.prizes-container {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  margin: 50px 200px;
+}
+
+.padding-right-50 {
+  padding-right: 50px
+}
+
+.prize-container {
+  padding: 25px 25px;
+}
+
+.top-message-container {
+  margin-top: 30px;
+}
+
+.buttons-container {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+}
+
+/* @media only screen and (max-width: 600px) {
+  .top-container {
+    justify-content: center;
+} */
